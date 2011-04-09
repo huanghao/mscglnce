@@ -1,0 +1,71 @@
+<script src='jquery-1.4.2.min.js'></script>
+<script>
+var queue = [];
+
+function sub(tpl, info) {
+    var m = tpl.match(/{.+?}/g);
+    for (var i in m)
+        tpl = tpl.replace(m[i], encodeURIComponent(info[m[i]]));
+    return tpl;
+}
+
+function mkurl(info) {
+    var PAGE = 'http://www.google.cn/music/search?q={title}+{表演者}&cat=album';
+    return sub(PAGE, info);
+}
+
+function albums(responseText) {
+    var html = $(responseText);
+    var albums = []
+    $('.AlbumItem', html).each(function() {
+        var href = $('.thumb a', this).attr('href');
+        var isrc = $('.thumb img', this).attr('src');
+        var title = $('.Title a', this).first().text();
+        var tracks = $('.Tracks', this).text();
+        albums.push({
+            href: 'http://www.google.cn'+href,
+            isrc: isrc,
+            title: title,
+            tracks: tracks
+        });
+    });
+    return albums;
+}
+
+
+
+function _search(url, tabid, sendback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200)
+            chrome.tabs.sendRequest(tabid,
+                {url:url, res:albums(xhr.responseText), sendback:sendback});
+            else {
+                console.debug('clear queue');
+                queue = [];
+            }
+        }
+    }
+    console.debug("DO:"+url);
+    xhr.send();
+}
+
+
+function search(timerestrict, url, tabid, sendback) {
+    var task = queue.pop();
+    if (!task) return;
+    return _search(task.url, task.tabid, task.sendback);
+}
+
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+    var info = request.info;
+    var url = mkurl(info);
+    //queue.unshift({url:url, tabid:sender.tab.id, sendback:request.sendback});
+    _search(url, sender.tab.id, request.sendback);
+    sendResponse({});
+});
+
+//setInterval(search, 2000);
+</script>

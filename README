@@ -1,0 +1,24 @@
+本项目是一个google-chrome extension，用户为经常使用豆瓣音乐和谷歌音乐的爱好者。
+
+if 你不明白上面那几个名词的含义，then
+	你可能来错地方了！找地儿凉快去把
+else if 你还有兴趣看看这是什么，then
+	请看截图：
+	http://www.douban.com/photos/album/45698412/
+else
+	建议你还是有兴趣比较好，对大家都有好处，也请看截图
+fi
+
+功能：
+在豆瓣音乐页面显示专辑图片，点击即可打开谷歌音乐试听。
+
+安装：
+此处有已经打好包的插件下载，请选择版本最高的那个，直接在chrome中猛击：
+http://www.huanghao.biz/chrome-extensions/
+
+说明：
+release目录中的文件：
+mscglnce.pem 升级版本打包需要用到的私钥
+updates.xml 自动升级配置文件
+
+代码量小且逻辑简单，无须其他说明，从background.html开始读源码即可
