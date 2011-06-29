@@ -1,7 +1,7 @@
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
 <script src='jquery-1.4.2.min.js'></script>
 <script>
-var queue = [];
-
 function sub(tpl, info) {
     var m = tpl.match(/{.+?}/g);
     for (var i in m)
@@ -9,9 +9,15 @@ function sub(tpl, info) {
     return tpl;
 }
 
-function mkurl(info) {
-    var PAGE = 'http://www.google.cn/music/search?q={title}+{表演者}&cat=album';
-    return sub(PAGE, info);
+function mkurls(info) {
+    var pages = [
+        'http://www.google.cn/music/search?q={title}+{表演者}&cat=album',
+        'http://www.google.cn/music/search?q={表演者}&cat=album',
+        ];
+    var urls = [];
+    for (var i in pages)
+        urls.push(sub(pages[i], info));
+    return urls;
 }
 
 function albums(responseText) {
@@ -33,39 +39,35 @@ function albums(responseText) {
 }
 
 
-
-function _search(url, tabid, sendback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200)
-            chrome.tabs.sendRequest(tabid,
-                {url:url, res:albums(xhr.responseText), sendback:sendback});
-            else {
-                console.debug('clear queue');
-                queue = [];
+function search_all(urls, tabid, sendback) {
+    search_next = function(url_idx) {
+        var url = urls[url_idx];
+        callback = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var found = albums(xhr.responseText);
+                if (found.length > 0) {
+                    chrome.tabs.sendRequest(tabid, {url:url, res:found, sendback:sendback});
+                }
+                else if (url_idx < urls.length-1)
+                    setTimeout("search_next("+(url_idx+1)+")", 1000);
             }
         }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.onreadystatechange = callback;
+        console.debug("DO:"+url_idx+":"+url);
+        xhr.send();
     }
-    console.debug("DO:"+url);
-    xhr.send();
-}
 
-
-function search(timerestrict, url, tabid, sendback) {
-    var task = queue.pop();
-    if (!task) return;
-    return _search(task.url, task.tabid, task.sendback);
+    search_next(0);
 }
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     var info = request.info;
-    var url = mkurl(info);
-    //queue.unshift({url:url, tabid:sender.tab.id, sendback:request.sendback});
-    _search(url, sender.tab.id, request.sendback);
+    var urls = mkurls(info);
+    search_all(urls, sender.tab.id, request.sendback);
     sendResponse({});
 });
 
-//setInterval(search, 2000);
 </script>

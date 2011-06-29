@@ -16,17 +16,14 @@ function getinfo() {
 
 function fire() {
     var req = {info:getinfo()};
-    console.debug(req);
     chrome.extension.sendRequest(req);
 }
 
 function show(url, res) {
-    console.debug(res);
     var div = albums_div(res);
     div.prepend($('<h3>').append($('<a target="_blank">')
         .attr('href', url)
         .text('Albums from google.cn music')));
-    console.debug(div);
 
     $('.rec-sec').after(div);
 }

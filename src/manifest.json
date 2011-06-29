@@ -1,7 +1,7 @@
 {
     "name": "music glance for douban",
     "description": "fetch album info from google.cn and display",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "background_page": "background.html",
     "content_scripts": [{
         "matches": ["http://music.douban.com/subject/*"],
@@ -17,7 +17,7 @@
         "matches": ["http://music.douban.com/tag/*"
             ,"http://music.douban.com/subject_search?*"
             ,"http://music.douban.com/search/*"
-            //,"http://music.douban.com/doulist/*"
+            ,"http://music.douban.com/doulist/*"
             ],
         "js": ["jquery-1.4.2.min.js", "tagpage.js"],
         "css": ["gcn.css"]
