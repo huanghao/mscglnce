@@ -1,0 +1,5 @@
+Wed Sep 28 00:26:12 CST 2011 Huang Hao <huang1hao@gmail.com>
+
+	* 增加对xiami.com的查询
+	* 重构出backend对象，方便支持多个查询引擎，目前支持g.cn/music, xiami.com
+

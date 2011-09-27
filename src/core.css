@@ -1,0 +1,17 @@
+.mscglnce_search_result {
+    padding: 0;
+    margin: 0;
+}
+
+.mscglnce_search_result .title {
+    font-size: 14px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+.mscglnce_search_result .thumb {
+    margin: 4px;
+    width: 60px;
+    height: 60px;
+}

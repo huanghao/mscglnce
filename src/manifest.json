@@ -1,17 +1,17 @@
 {
     "name": "music glance for douban",
     "description": "fetch album info from google.cn and display",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "background_page": "background.html",
     "content_scripts": [{
         "matches": ["http://music.douban.com/subject/*"],
-        "js": ["jquery-1.4.2.min.js", "albumpage.js", "utils.js"],
-        "css": ["gcn.css"]
+        "js": ["jquery-1.4.2.min.js", "albumpage.js"],
+        "css": ["core.css"]
     },
     {
         "matches": ["http://music.douban.com/people/*/*"],
         "js": ["jquery-1.4.2.min.js", "collectpage.js"],
-        "css": ["gcn.css"]
+        "css": ["core.css"]
     },
     {
         "matches": ["http://music.douban.com/tag/*"
@@ -20,11 +20,12 @@
             ,"http://music.douban.com/doulist/*"
             ],
         "js": ["jquery-1.4.2.min.js", "tagpage.js"],
-        "css": ["gcn.css"]
+        "css": ["core.css"]
     }
     ],
     "permissions": [
-        "http://www.google.cn/music/*"
+        "http://www.google.cn/music/*",
+        "http://www.xiami.com/search/*"
     ],
     "update_url": "http://www.huanghao.biz/chrome-extensions/update.xml"
 }

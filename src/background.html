@@ -1,73 +1,70 @@
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 
 <script src='jquery-1.4.2.min.js'></script>
+<script src='backends.js'></script>
+
 <script>
-function sub(tpl, info) {
-    var m = tpl.match(/{.+?}/g);
-    for (var i in m)
-        tpl = tpl.replace(m[i], encodeURIComponent(info[m[i]]));
-    return tpl;
+function Engine(tabid, request, backends) {
+    this.tabid = tabid;
+    this.sendback = request.sendback;
+    this.request = self.request;
+    this.backends = [];
+    for (var i in backends)
+        this.backends.push(new backends[i](request.meta));
 }
 
-function mkurls(info) {
-    var pages = [
-        'http://www.google.cn/music/search?q={title}+{表演者}&cat=album',
-        'http://www.google.cn/music/search?q={表演者}&cat=album',
-        ];
-    var urls = [];
-    for (var i in pages)
-        urls.push(sub(pages[i], info));
-    return urls;
+Engine.prototype.next_backend = function() {
+    this.backend_i += 1;
+    this.backend_url_i = 0;
 }
 
-function albums(responseText) {
-    var html = $(responseText);
-    var albums = []
-    $('.AlbumItem', html).each(function() {
-        var href = $('.thumb a', this).attr('href');
-        var isrc = $('.thumb img', this).attr('src');
-        var title = $('.Title a', this).first().text();
-        var tracks = $('.Tracks', this).text();
-        albums.push({
-            href: 'http://www.google.cn'+href,
-            isrc: isrc,
-            title: title,
-            tracks: tracks
-        });
-    });
-    return albums;
+Engine.prototype.next_backend_url = function() {
+    this.backend_url_i += 1;
+    if (this.backend_url_i >= this.backends[this.backend_i].urls.length)
+        this.next_backend()
+}
+
+Engine.prototype.search = function() {
+    this.backend_i = 0;
+    this.backend_url_i = 0;
+    this._search()
 }
 
 
-function search_all(urls, tabid, sendback) {
-    search_next = function(url_idx) {
-        var url = urls[url_idx];
-        callback = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var found = albums(xhr.responseText);
-                if (found.length > 0) {
-                    chrome.tabs.sendRequest(tabid, {url:url, res:found, sendback:sendback});
-                }
-                else if (url_idx < urls.length-1)
-                    setTimeout("search_next("+(url_idx+1)+")", 1000);
+Engine.prototype._search = function() {
+    if (this.backend_i >= this.backends.length)
+        return;
+
+    var backend = this.backends[this.backend_i];
+    var url = backend.urls[this.backend_url_i];
+    self = this;
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var albums = backend.parse(xhr.responseText);
+            if (albums.length > 0) {
+                self.next_backend();
+                chrome.tabs.sendRequest(self.tabid, {
+                    sendback: self.sendback,
+                    title: backend.title,
+                    url: url,
+                    albums: albums
+                 });
             }
+            else {
+                self.next_backend_url();
+            }
+            setTimeout("self._search()", 1000);
         }
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
-        xhr.onreadystatechange = callback;
-        console.debug("DO:"+url_idx+":"+url);
-        xhr.send();
-    }
-
-    search_next(0);
+    };
+    console.debug("SEARCH:"+url);
+    xhr.send();
 }
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-    var info = request.info;
-    var urls = mkurls(info);
-    search_all(urls, sender.tab.id, request.sendback);
+    (new Engine(sender.tab.id, request, [GCN, XiaMi])).search();
     sendResponse({});
 });
-
 </script>
