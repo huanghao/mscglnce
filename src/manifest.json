@@ -1,7 +1,7 @@
 {
     "name": "music glance for douban",
     "description": "fetch album info from google.cn and display",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "background_page": "background.html",
     "content_scripts": [{
         "matches": ["http://music.douban.com/subject/*"],

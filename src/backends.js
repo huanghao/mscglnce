@@ -53,11 +53,13 @@ XiaMi.prototype.parse = function(responseText) {
         var href = $('a', this).attr('href');
         var title = $('a', this).attr('title');
         var img = $('img', this).attr('src');
-        albums.push({
-            href: 'http://www.xiami.com'+href,
-            img: img,
-            title: title
-        });
+        if ($('span.unpub', this).length == 0) {
+            albums.push({
+                href: 'http://www.xiami.com'+href,
+                img: img,
+                title: title
+            });
+        }
     });
     return albums;
 }

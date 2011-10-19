@@ -1,3 +1,8 @@
+Thu Oct 20 00:04:20 CST 2011 Huang Hao <huang1hao@gmail.com>
+
+	* 对xiami.com搜索出来的unpub专辑进行过滤,不在结果中显示
+	* 把两个engine之间的查询时间间隔从1s调整为.5s
+
 Wed Sep 28 00:26:12 CST 2011 Huang Hao <huang1hao@gmail.com>
 
 	* 增加对xiami.com的查询
