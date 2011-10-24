@@ -15,6 +15,7 @@ function sub_pages(meta, pages) {
 function GCN(meta) {
     this.urls = sub_pages(meta, [
         'http://www.google.cn/music/search?q={title}+{表演者}&cat=album',
+        'http://www.google.cn/music/search?q={title}&cat=album',
         'http://www.google.cn/music/search?q={表演者}&cat=album'
     ]);
     this.title = 'Albums from google.cn/music';
@@ -41,6 +42,7 @@ GCN.prototype.parse = function(responseText) {
 function XiaMi(meta) {
     this.urls = sub_pages(meta, [
         'http://www.xiami.com/search/album?key={title}+{表演者}',
+        'http://www.xiami.com/search/album?key={title}',
         'http://www.xiami.com/search/album?key={表演者}'
     ]);
     this.title = 'Albums from xiami.com';
@@ -49,15 +51,18 @@ function XiaMi(meta) {
 XiaMi.prototype.parse = function(responseText) {
     var html = $(responseText);
     var albums = [];
-    $('p.cover', html).each(function() {
-        var href = $('a', this).attr('href');
-        var title = $('a', this).attr('title');
-        var img = $('img', this).attr('src');
+    $('div.album_item100_block', html).each(function() {
+        var href = $('.cover a', this).attr('href');
+        var img = $('.cover img', this).attr('src');
+        var title = "<" + $('.name a:first', this).text() +"> " + 
+            $('.name .singer', this).text() + ' ' + $('.year', this).text();
+        var tracks = $('.album_rank em', this).text();
         if ($('span.unpub', this).length == 0) {
             albums.push({
                 href: 'http://www.xiami.com'+href,
                 img: img,
-                title: title
+                title: title,
+                tracks: tracks
             });
         }
     });
