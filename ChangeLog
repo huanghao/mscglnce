@@ -1,9 +1,15 @@
-Thu Oct 20 00:04:20 CST 2011 Huang Hao <huang1hao@gmail.com>
+Tue Oct 25 00:41:41 CST 2011 Huang Hao
+
+	* 第一次查询歌手+专辑，第二次查询专辑，第三次查询歌手
+	* 调换了GCN和Xiami的查询顺序
+	* Xiami专辑的title整理
+
+Thu Oct 20 00:04:20 CST 2011 Huang Hao
 
 	* 对xiami.com搜索出来的unpub专辑进行过滤,不在结果中显示
 	* 把两个engine之间的查询时间间隔从1s调整为.5s
 
-Wed Sep 28 00:26:12 CST 2011 Huang Hao <huang1hao@gmail.com>
+Wed Sep 28 00:26:12 CST 2011 Huang Hao
 
 	* 增加对xiami.com的查询
 	* 重构出backend对象，方便支持多个查询引擎，目前支持g.cn/music, xiami.com
