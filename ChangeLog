@@ -1,3 +1,8 @@
+Wed Nov  2 22:09:53 CST 2011
+
+	* add utils.js
+	* 修正subject_search页面无法搜索的bug
+
 Tue Oct 25 00:41:41 CST 2011 Huang Hao
 
 	* 第一次查询歌手+专辑，第二次查询专辑，第三次查询歌手

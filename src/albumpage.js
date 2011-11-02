@@ -19,22 +19,8 @@ function fire() {
     chrome.extension.sendRequest(req);
 }
 
-function albums_div(res) {
-    var div = $('<div class="mscglnce_search_result">');
-    $.each(res, function(i, val) {
-        div.append($('<a target="_blank">').attr({'href':val.href, 'title':val.title+" "+val.tracks})
-            .append($('<img class="thumb">').attr({'src':val.img, 'alt':':('})));
-    });
-    return div;
-}
-
 function show(title, url, albums) {
-    var div = albums_div(albums);
-    div.prepend($('<h3 class="title">').append($('<a target="_blank">')
-        .attr('href', url)
-        .text(title)));
-
-    $('.rec-sec').after(div);
+    $('.rec-sec').after(albums_div(title, url, albums));
 }
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {

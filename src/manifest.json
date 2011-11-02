@@ -1,11 +1,11 @@
 {
     "name": "music glance for douban",
     "description": "fetch album info from google.cn and display",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "background_page": "background.html",
     "content_scripts": [{
         "matches": ["http://music.douban.com/subject/*"],
-        "js": ["jquery-1.4.2.min.js", "albumpage.js"],
+        "js": ["jquery-1.4.2.min.js", "albumpage.js", "utils.js"],
         "css": ["core.css"]
     },
     {
@@ -19,7 +19,7 @@
             ,"http://music.douban.com/search/*"
             ,"http://music.douban.com/doulist/*"
             ],
-        "js": ["jquery-1.4.2.min.js", "tagpage.js"],
+        "js": ["jquery-1.4.2.min.js", "tagpage.js", "utils.js"],
         "css": ["core.css"]
     }
     ],
