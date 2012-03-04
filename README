@@ -1,13 +1,7 @@
 本项目是一个google-chrome extension，用户为经常使用豆瓣音乐和谷歌音乐的爱好者。
 
-if 你不明白上面那几个名词的含义，then
-	你可能来错地方了！找地儿凉快去把
-else if 你还有兴趣看看这是什么，then
-	请看截图：
-	http://www.douban.com/photos/album/45698412/
-else
-	建议你还是有兴趣比较好，对大家都有好处，也请看截图
-fi
+截图：
+http://www.douban.com/photos/album/45698412/
 
 功能：
 在豆瓣音乐页面显示专辑图片，点击即可打开谷歌音乐试听。
