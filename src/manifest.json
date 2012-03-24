@@ -1,7 +1,7 @@
 {
     "name": "music glance for douban",
     "description": "fetch album info from google.cn and display",
-    "version": "0.4.3",
+    "version": "0.5.3",
     "background_page": "background.html",
     "content_scripts": [{
         "matches": ["http://music.douban.com/subject/*"],
@@ -25,7 +25,8 @@
     ],
     "permissions": [
         "http://www.google.cn/music/*",
-        "http://www.xiami.com/search/*"
+        "http://www.xiami.com/search/*",
+        "http://ting.baidu.com/search"
     ],
     "update_url": "http://www.huanghao.biz/chrome-extensions/update.xml"
 }

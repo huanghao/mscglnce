@@ -64,7 +64,8 @@ Engine.prototype._search = function() {
 }
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-    (new Engine(sender.tab.id, request, [XiaMi, GCN])).search();
+    var backends = [GCN, XiaMi, Ting];
+    (new Engine(sender.tab.id, request, backends)).search();
     sendResponse({});
 });
 </script>

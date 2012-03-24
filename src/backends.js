@@ -68,3 +68,36 @@ XiaMi.prototype.parse = function(responseText) {
     });
     return albums;
 }
+
+function Ting(meta) {
+    this.urls = sub_pages(meta, [
+        'http://ting.baidu.com/search?key={title}+{表演者}',
+        'http://ting.baidu.com/search?key={title}',
+        'http://ting.baidu.com/search?key={表演者}',
+    ]);
+    this.title = 'Albums from ting.baidu.com'
+}
+Ting.prototype.parse = function(responseText) {
+    var html = $(responseText);
+    var albums = [];
+    var addr = [];
+    var img = '#';
+    $('a.cover', html).each(function() {
+        img = $('img', this).attr('org_src');
+    });
+    $('span.album-title a', html).each(function() {
+        var href = $(this).attr('href');
+        var title = $(this).text()
+        var al = {
+            href: 'http://ting.baidu.com'+href,
+            title: title,
+            img: img,
+            tracks: ''
+        };
+        if (addr.indexOf(href)<0) {
+            addr.push(href)
+            albums.push(al);
+        }
+    });
+    return albums;
+}
