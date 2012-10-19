@@ -14,5 +14,3 @@ http://huanghao.biz/chrome-extensions/
 release目录中的文件：
 mscglnce.pem 升级版本打包需要用到的私钥
 updates.xml 自动升级配置文件
-
-代码量小且逻辑简单，无须其他说明，从background.html开始读源码即可
