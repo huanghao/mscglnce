@@ -2,12 +2,13 @@
 
 <script src='jquery-1.4.2.min.js'></script>
 <script src='backends.js'></script>
+<script src='engine.js'></script>
 
 <script>
+/*
 function Engine(tabid, request, backends) {
     this.tabid = tabid;
     this.sendback = request.sendback;
-    this.request = self.request;
     this.backends = [];
     for (var i in backends)
         this.backends.push(new backends[i](request.meta));
@@ -62,9 +63,11 @@ Engine.prototype._search = function() {
     console.debug("SEARCH:"+url);
     xhr.send();
 }
+*/
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-    var backends = [XiaMi, Ting];
+    console.debug("here");
+    var backends = [XiaMi];
     (new Engine(sender.tab.id, request, backends)).search();
     sendResponse({});
 });
