@@ -46,3 +46,9 @@ class Engine
 
         console.debug("SEARCH: #{url}")
         xhr.send()
+
+chrome.extension.onRequest.addListener (request, sender, sendResponse) ->
+    backends = [XiaMi]
+    engine = new Engine(sender.tab.id, request, backends)
+    engine.search()
+    sendResponse {}
