@@ -5,7 +5,7 @@
     "background_page": "background.html",
     "content_scripts": [{
         "matches": ["http://music.douban.com/subject/*"],
-        "js": ["jquery-1.4.2.min.js", "build/albumpage.js", "utils.js"],
+        "js": ["jquery-1.4.2.min.js", "build/albumpage.js", "build/utils.js"],
         "css": ["core.css"]
     },
     {

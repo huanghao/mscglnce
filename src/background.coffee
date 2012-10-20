@@ -1,54 +1,73 @@
-class Engine
+class XiaMi
+    constructor: (meta) ->
+        queries = [
+            'http://www.xiami.com/search/album?key={title}+{表演者}',
+            'http://www.xiami.com/search/album?key={title}',
+            'http://www.xiami.com/search/album?key={表演者}'
+            ]
+        @urls = format_urls(queries, meta)
+        @title = "xiami.com 在线试听"
+        console.debug meta
+        console.debug @urls
 
-    constructor: (@tabid, request, backends) ->
-        @sendback = request.sendback
-        @backends = for b in backends
-            new b(request.meta)
+    parse: (responseText) ->
+        html = $(responseText)
+        albums = []
+        $('div.album_item100_block', html).each () ->
+            href = $('.cover a', this).attr('href')
+            img = $('.cover img', this).attr('src')
+            tracks = $('.album_rank em', this).text()
 
-    next_backend: () ->
-        @backend_i += 1
-        @backend_url_i = 0
+            name = $('.name a:first', this).text()
+            singer = $('.name .singer', this).text()
+            year = $('.year', this).text()
+            title = "<#{name}> #{singer} #{year}"
 
-    next_backend_url: () ->
-        @backend_url_i += 1
-        if @backend_url_i >= @backends[@backend_i].urls.length
-            @next_backend()
+            if $('span.unpub', this).length == 0
+                data = 
+                    href: "http://www.xiami.com#{href}"
+                    img: img
+                    title: title
+                    tracks: tracks
+                albums.push data
+        albums
 
-    search: () ->
-        @backend_i = 0
-        @backend_url_i = 0
-        @_search()
 
-    _search: () ->
-        if @backend_i >= @backends.length
-            return
+tasks = []
 
-        backend = @backends[@backend_i]
-        url = backend.urls[@backend_url_i]
-        that = this
+add_task = (msg, sender) ->
+    for cls in [XiaMi]
+        backend = new cls(msg)
+        for url in backend.urls
+            task =
+                url: url
+                parser: backend.parse
+                tabid: sender.tab.id
+                title: backend.title
+            tasks.push task
 
-        xhr = new XMLHttpRequest()
-        xhr.open('GET', url, true)
-        xhr.onreadystatechange = () ->
-            if xhr.readyState == 4 && xhr.status == 200
-                albums = backend.parse(xhr.responseText)
-                if albums.length > 0
-                    that.next_backend()
-                    data =
-                        sendback: that.sendback,
-                        title: backend.title,
-                        url: url,
-                        albums: albums
-                    chrome.tabs.sendRequest(that.tabid, data)
-                else
-                    that.next_backend_url()
-                setTimeout('that._search()', 500)
+run = ->
+    if tasks.length == 0
+        return
 
-        console.debug("SEARCH: #{url}")
-        xhr.send()
+    task = tasks.shift()
+
+    wget task.url, (responseText) ->
+        albums = task.parser responseText
+        if albums? and albums.length > 0
+            data =
+                title: task.title
+                url: task.url
+                albums: albums
+
+            #TODO, only remove all urls from some site
+            tasks = []
+            send2tab task.tabid, data
+        else
+            delay run
+
 
 chrome.extension.onRequest.addListener (request, sender, sendResponse) ->
-    backends = [XiaMi]
-    engine = new Engine(sender.tab.id, request, backends)
-    engine.search()
     sendResponse {}
+    add_task request, sender
+    delay run

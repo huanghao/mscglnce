@@ -1,16 +1,16 @@
-.mscglnce_search_result {
+.mscglnce_albums {
     padding: 0;
     margin: 0;
 }
 
-.mscglnce_search_result .title {
+.mscglnce_albums .title {
     font-size: 14px;
     text-align: center;
     padding: 0;
     margin: 0;
 }
 
-.mscglnce_search_result .thumb {
+.mscglnce_albums .thumb {
     margin: 4px;
     width: 60px;
     height: 60px;

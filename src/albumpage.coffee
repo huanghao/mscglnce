@@ -1,8 +1,10 @@
 String::endsWith = (suffix) ->
     this.indexOf(suffix, this.length - suffix.length) != -1
 
+send2ext = (message) ->
+    chrome.extension.sendRequest message
 
-getinfo = () ->
+get_info = () ->
     info =
         '{title}': $('h1 span').text().trim()
 
@@ -28,19 +30,33 @@ getinfo = () ->
     console.debug info
     info
 
+create_album_list = (data) ->
+    title = data.title
+    url = data.url
+    albums = data.albums
 
-fire = () ->
-    chrome.extension.sendRequest meta: getinfo()
+    div = $('<div class="mscglnce_albums">')
 
-show = (title, url, albums) ->
-    $('.rec-sec').after(albums_div(title, url, albums))
+    a = $('<a target="_blank">').attr('href', url).text(title)
+    h3 = $('<h3 class="title">').append a
+    div.append h3
+
+    for album in albums
+        img = $('<img class="thumb">').attr
+            src: album.img
+            alt: album.title
+        a = $('<a target="_blank">').attr
+            href: album.href
+            title: "#{album.title} #{album.tracks}"
+        div.append a.append img
+    div
+
+show = (data) ->
+    $('.rec-sec').after(create_album_list(data))
 
 chrome.extension.onRequest.addListener (request, sender, sendResponse) ->
-    sendback = request.sendback
-    title = request.title
-    url = request.url
-    albums = request.albums
-    show(title, url, albums)
-    sendResponse({})
+    sendResponse {}
+    data = request
+    show data
 
-fire()
+send2ext get_info()
