@@ -1,16 +1,12 @@
-本项目是一个google-chrome extension，用户为经常使用豆瓣音乐和谷歌音乐的爱好者。
+本项目是一个google-chrome extension，当打开douban音乐专辑页面时，搜索和显示当前专辑的试听地址。
 
 截图：
 http://www.douban.com/photos/album/45698412/
 
-功能：
-在豆瓣音乐页面显示专辑图片，点击即可打开谷歌音乐试听。
-
 安装：
-此处有已经打好包的插件下载，请选择版本最高的那个，直接在chrome中猛击：
-http://huanghao.biz/chrome-extensions/
+- 下载release中的crx文件，拽到chrome上点安装
+- 源码安装
+ - git clone
+ - chrome -> tools -> extension -> load unpacked extension...
+ - 目录选择到src目录
 
-说明：
-release目录中的文件：
-mscglnce.pem 升级版本打包需要用到的私钥
-updates.xml 自动升级配置文件
