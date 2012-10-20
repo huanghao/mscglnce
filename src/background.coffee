@@ -1,12 +1,12 @@
 class XiaMi
     constructor: (meta) ->
+        @title = "music from xiami.com"
         queries = [
             'http://www.xiami.com/search/album?key={title}+{表演者}',
             'http://www.xiami.com/search/album?key={title}',
             'http://www.xiami.com/search/album?key={表演者}'
             ]
         @urls = format_urls(queries, meta)
-        @title = "xiami.com 在线试听"
         console.debug meta
         console.debug @urls
 

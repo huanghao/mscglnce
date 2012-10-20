@@ -19,7 +19,7 @@
             ,"http://music.douban.com/search/*"
             ,"http://music.douban.com/doulist/*"
             ],
-        "js": ["jquery-1.4.2.min.js", "tagpage.js", "utils.js"],
+        "js": ["jquery-1.4.2.min.js", "tagpage.js", "build/utils.js"],
         "css": ["core.css"]
     }
     ],
