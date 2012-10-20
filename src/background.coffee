@@ -33,41 +33,44 @@ class XiaMi
         albums
 
 
-tasks = []
+class Engine
+    constructor: (request, sender) ->
+        @tasks = []
+        @add_task(request, sender)
 
-add_task = (msg, sender) ->
-    for cls in [XiaMi]
-        backend = new cls(msg)
-        for url in backend.urls
-            task =
-                url: url
-                parser: backend.parse
-                tabid: sender.tab.id
-                title: backend.title
-            tasks.push task
+    add_task: (msg, sender) =>
+        for cls in [XiaMi]
+            backend = new cls(msg)
+            for url in backend.urls
+                task =
+                    url: url
+                    parser: backend.parse
+                    tabid: sender.tab.id
+                    title: backend.title
+                @tasks.push task
 
-run = ->
-    if tasks.length == 0
-        return
+    run: =>
+        if @tasks.length == 0
+            return
 
-    task = tasks.shift()
+        task = @tasks.shift()
 
-    wget task.url, (responseText) ->
-        albums = task.parser responseText
-        if albums? and albums.length > 0
-            data =
-                title: task.title
-                url: task.url
-                albums: albums
+        wget task.url, (responseText) ->
+            albums = task.parser responseText
+            if albums? and albums.length > 0
+                data =
+                    title: task.title
+                    url: task.url
+                    albums: albums
 
-            #TODO, only remove all urls from some site
-            tasks = []
-            send2tab task.tabid, data
-        else
-            delay run
+                #TODO, only remove all urls from some site
+                @tasks = []
+                send2tab task.tabid, data
+            else
+                delay @run
 
 
 chrome.extension.onRequest.addListener (request, sender, sendResponse) ->
     sendResponse {}
-    add_task request, sender
-    delay run
+    engine = new Engine(request, sender)
+    delay engine.run
