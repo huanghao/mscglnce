@@ -5,7 +5,7 @@
     "background_page": "background.html",
     "content_scripts": [{
         "matches": ["http://music.douban.com/subject/*"],
-        "js": ["jquery-1.4.2.min.js", "build/albumpage.js", "build/utils.js"],
+        "js": ["jquery-1.4.2.min.js", "build/utils.js", "build/albumpage.js"],
         "css": ["core.css"]
     },
     {
@@ -21,6 +21,10 @@
             ],
         "js": ["jquery-1.4.2.min.js", "tagpage.js", "build/utils.js"],
         "css": ["core.css"]
+    },
+    {
+        "matches": ["http://www.xiami.com/album/*"],
+        "js": ["jquery-1.4.2.min.js", "build/utils.js", "build/xiami_album_page.js"]
     }
     ],
     "permissions": [

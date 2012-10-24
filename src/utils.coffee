@@ -2,7 +2,7 @@ wget = (url, callback) -> # callback(responseText)
     xhr = new XMLHttpRequest()
     xhr.open('GET', url, true)
     xhr.onreadystatechange = () ->
-        if xhr.readyState == 4 && xhr.status == 200
+        if xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304)
             console.debug "wget: callback: #{url}"
             callback(xhr.responseText)
 
@@ -31,3 +31,31 @@ format_urls = (links, meta) ->
             continue
         urls.push url
     urls
+
+String::endsWith = (suffix) ->
+    this.indexOf(suffix, this.length - suffix.length) != -1
+
+parse_kv = (txt) ->
+    txt = txt.replace(/\uff1a/g, ":")
+    lines = (i.trim() for i in txt.trim().split('\n'))
+    lines = (i for i in lines when i.length > 0)
+
+    continue_ = false
+    new_lines = []
+
+    for line in lines
+        if continue_
+            new_lines[new_lines.length-1] += line
+            continue_ = false
+        else
+            if line.endsWith(':')
+                continue_ = true
+            new_lines.push line
+
+    info = {}
+
+    for line in new_lines
+        [name, val] = ( i.trim() for i in line.split(':', 2))
+        info["{#{name}}"] = val
+
+    info
