@@ -1,9 +1,17 @@
 mscglnce
 ====
-本项目是一个google-chrome extension，当打开douban音乐专辑页面时，搜索和显示当前专辑的试听地址。
+这是一个google-chrome extension，能够在豆瓣音乐里自动显示专辑试听地址。
 
+支持的页面有: 专辑页面，搜索页面，豆瓣猜，豆列
+music.douban.com/subject/*
+music.douban.com/tag/*
+music.douban.com/subject_search?*
+music.douban.com/recommended
+music.douban.com/doulist/*
 
-截图
+专辑试听地址来自于: xiami.com
+
+功能截图
 ====
 http://www.douban.com/photos/album/45698412/
 
