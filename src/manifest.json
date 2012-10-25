@@ -1,7 +1,7 @@
 {
     "name": "music glance for douban"
     ,"description": "search album to provide links for listening"
-    ,"version": "0.5"
+    ,"version": "0.5.1"
     ,"background_page": "background.html"
     ,"content_scripts": [{
         "matches": ["http://music.douban.com/subject/*"]
@@ -33,4 +33,3 @@
     ]
     ,"update_url": "http://www.huanghao.biz/chrome-extensions/update.xml"
 }
-    
