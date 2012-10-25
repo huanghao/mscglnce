@@ -1,36 +1,36 @@
 {
-    "name": "music glance for douban",
-    "description": "search album to provide links for listening",
-    "version": "0.5",
-    "background_page": "background.html",
-    "content_scripts": [{
-        "matches": ["http://music.douban.com/subject/*"],
-        "js": ["jquery-1.4.2.min.js", "build/utils.js", "build/albumpage.js"],
-        "css": ["core.css"]
-    },
-    {
-        "matches": ["http://music.douban.com/people/*/*"],
-        "js": ["jquery-1.4.2.min.js", "collectpage.js"],
-        "css": ["core.css"]
-    },
-    {
+    "name": "music glance for douban"
+    ,"description": "search album to provide links for listening"
+    ,"version": "0.5"
+    ,"background_page": "background.html"
+    ,"content_scripts": [{
+        "matches": ["http://music.douban.com/subject/*"]
+        ,"js": ["jquery-1.8.2.min.js", "build/utils.js", "build/albumpage.js"]
+        ,"css": ["core.css"]
+    }
+    ,{
+        "matches": ["http://music.douban.com/people/*/*"]
+        ,"js": ["jquery-1.8.2.min.js", "collectpage.js"]
+        ,"css": ["core.css"]
+    }
+    ,{
         "matches": ["http://music.douban.com/tag/*"
             ,"http://music.douban.com/subject_search?*"
             ,"http://music.douban.com/search/*"
-            ,"http://music.douban.com/doulist/*"
             ,"http://music.douban.com/recommended"
-            ],
-        "js": ["jquery-1.4.2.min.js", "build/utils.js", "build/tagpage.js"],
-        "css": ["core.css"]
-    },
-    {
-        "matches": ["http://www.xiami.com/album/*"],
-        "js": ["jquery-1.4.2.min.js", "build/utils.js", "build/xiami_album_page.js"]
+            ,"http://music.douban.com/doulist/*"
+            ]
+        ,"js": ["jquery-1.8.2.min.js", "build/utils.js", "build/tagpage.js"]
+        ,"css": ["core.css"]
     }
-    ],
-    "permissions": [
+    ,{
+        "matches": ["http://www.xiami.com/album/*"]
+        ,"js": ["jquery-1.8.2.min.js", "build/utils.js", "build/xiami_album_page.js"]
+    }
+    ]
+    ,"permissions": [
         "http://www.xiami.com/search/*"
-    ],
-    "update_url": "http://www.huanghao.biz/chrome-extensions/update.xml"
+    ]
+    ,"update_url": "http://www.huanghao.biz/chrome-extensions/update.xml"
 }
     

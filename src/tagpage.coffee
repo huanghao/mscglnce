@@ -1,13 +1,23 @@
 add_search_buttons = ->
     $("table").each (idx) ->
-        pl2 = $('.pl2', this)
-        title = pl2.text().trim().split('/')[0]
-        intro = pl2.next('p.pl').text().split('/')
-        artist = intro[intro.length-1].trim()
+        td = $('td:last', this)
+        pl2 = $('.pl2', td)
+        pl = $('p.pl', td)
+        if pl2.length < 1 or pl.length < 1
+            return
 
-        info = '{title}': title
-        if artist != ""
-            info['{表演者}'] = artist
+        info = {}
+        intro = pl.html().trim().replace(/<[^>]*>/, "\n").replace(/\uff1a/g, ":")
+        arr = intro.split('/')
+        if arr.length >= 5
+            artist = arr[arr.length-1].trim()
+            if artist != ""
+                info['{表演者}'] = artist
+        else
+            info = parse_kv intro
+
+        title = $('a', pl2).text().trim().split('/')[0]
+        info['{title}'] = title
 
         a = $('<a href="#">')
             .attr('id', "gcnsearch#{idx}")
@@ -19,7 +29,7 @@ add_search_buttons = ->
                 console.debug info
                 false
         span = $('<span>').attr('class', 'gact').append(a)
-        $('.gact', this).parent('p').append("&nbsp;&nbsp;").append(span)
+        $('p:last', td).append("&nbsp;&nbsp;").append(span)
 
 show = (data) ->
     albums = data.albums
@@ -31,7 +41,7 @@ show = (data) ->
         btn.after($("<span>").text('None'))
     else
         div = create_album_list data
-        btn.parents('table').after(div)
+        btn.parents('p').after(div)
         btn.remove()
 
 chrome.extension.onRequest.addListener (request, sender, sendResponse) ->
