@@ -15,6 +15,9 @@ delay = (callback, time=500) ->
 send2tab = (tabid, message) ->
     chrome.tabs.sendRequest(tabid, message)
 
+send2ext = (message) ->
+    chrome.extension.sendRequest message
+
 format = (string, dict) ->
     for name in string.match(/{.+?}/g)
         if not (name of dict) or dict[name] == ''
@@ -59,3 +62,25 @@ parse_kv = (txt) ->
         info["{#{name}}"] = val
 
     info
+
+
+create_album_list = (data) ->
+    title = data.title
+    url = data.url
+    albums = data.albums
+
+    div = $('<div class="gcn_albums">')
+
+    a = $('<a target="_blank">').attr('href', url).text(title)
+    h3 = $('<h3 class="gcn_album_title">').append a
+    div.append h3
+
+    for album in albums
+        img = $('<img class="gcn_album_thumb">').attr
+            src: album.img
+            alt: album.title
+        a = $('<a target="_blank">').attr
+            href: album.href
+            title: "#{album.title} #{album.tracks}"
+        div.append a.append img
+    div

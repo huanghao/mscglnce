@@ -18,8 +18,9 @@
             ,"http://music.douban.com/subject_search?*"
             ,"http://music.douban.com/search/*"
             ,"http://music.douban.com/doulist/*"
+            ,"http://music.douban.com/recommended"
             ],
-        "js": ["jquery-1.4.2.min.js", "tagpage.js", "build/utils.js"],
+        "js": ["jquery-1.4.2.min.js", "build/utils.js", "build/tagpage.js"],
         "css": ["core.css"]
     },
     {

@@ -36,11 +36,12 @@ class XiaMi
 class Engine
     constructor: (request, sender) ->
         @tasks = []
-        @add_task(request, sender)
+        @sendback = request.sendback ? {}
+        @add_task(request.meta, sender)
 
-    add_task: (msg, sender) =>
+    add_task: (meta, sender) =>
         for cls in [XiaMi]
-            backend = new cls(msg)
+            backend = new cls(meta)
             for url in backend.urls
                 task =
                     url: url
@@ -55,6 +56,7 @@ class Engine
 
         task = @tasks.shift()
 
+        that = this
         wget task.url, (responseText) ->
             albums = task.parser responseText
             if albums? and albums.length > 0
@@ -62,12 +64,13 @@ class Engine
                     title: task.title
                     url: task.url
                     albums: albums
+                    sendback: that.sendback
 
                 #TODO, only remove all urls from some site
-                @tasks = []
+                that.tasks = []
                 send2tab task.tabid, data
             else
-                delay @run
+                delay that.run
 
 
 chrome.extension.onRequest.addListener (request, sender, sendResponse) ->
