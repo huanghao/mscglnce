@@ -27,6 +27,10 @@
         "matches": ["http://www.xiami.com/album/*"]
         ,"js": ["jquery-1.8.2.min.js", "build/utils.js", "build/xiami_album_page.js"]
     }
+    ,{
+        "matches": ["http://movie.douban.com/people/*/*"]
+        ,"js": ["jquery-1.8.2.min.js", "build/utils.js", "build/movie_wish.js"]
+    }
     ]
     ,"permissions": [
         "http://www.xiami.com/search/*"
