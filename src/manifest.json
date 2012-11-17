@@ -10,7 +10,7 @@
     }
     ,{
         "matches": ["http://music.douban.com/people/*/*"]
-        ,"js": ["jquery-1.8.2.min.js", "collectpage.js"]
+        ,"js": ["jquery-1.8.2.min.js", "build/utils.js", "build/collectpage.js"]
         ,"css": ["core.css"]
     }
     ,{
