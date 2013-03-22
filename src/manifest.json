@@ -1,8 +1,11 @@
 {
+    "manifest_version": 2,
     "name": "music glance for douban"
     ,"description": "search album to provide links for listening"
     ,"version": "0.5.1"
-    ,"background_page": "background.html"
+    ,"background": {
+        "page": "background.html"
+    }
     ,"content_scripts": [{
         "matches": ["http://music.douban.com/subject/*"]
         ,"js": ["jquery-1.8.2.min.js", "build/utils.js", "build/albumpage.js"]
