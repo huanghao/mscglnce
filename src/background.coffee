@@ -25,7 +25,7 @@ class XiaMi
 
             if $('span.unpub', this).length == 0
                 data = 
-                    href: "http://www.xiami.com#{href}"
+                    href: "#{href}"
                     img: img
                     title: title
                     tracks: tracks
